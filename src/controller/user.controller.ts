@@ -30,6 +30,7 @@ export class UserController {
     try {
       const { email, password, name } = req.body;
       const dataBase = new UserDataBase();
+      const userList = new UserDataBase().list();
 
       if (email === "" || password === "" || name === "") {
         return res.status(404).send({
@@ -42,6 +43,14 @@ export class UserController {
         return res.status(404).send({
           ok: false,
           message: "Preencha a senha com pelo menos 5 caractéres.",
+        });
+      }
+
+      const userExist = userList.some((user) => user.email === email);
+      if (userExist) {
+        return res.status(404).send({
+          ok: false,
+          message: "Usuário já cadastrado. Volte e faça o login.",
         });
       }
       const newUser = new User(name, email, password);
