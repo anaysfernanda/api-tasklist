@@ -23,7 +23,7 @@ export class TaskController {
         return RequestError.notFound(res, "Usuário");
       }
 
-      const allTasks = user.tasks || [];
+      const allTasks = user.tasks;
       return SuccessResponse.ok(res, "Lista de tasks.", allTasks);
     } catch (error: any) {
       return ServerError.genericError(res, error);
@@ -50,9 +50,10 @@ export class TaskController {
         return RequestError.fieldNotProvided(res, "Campo");
       }
 
-      user.addTask(new Task(title, description));
+      const newTask = new Task(title, description);
+      user.addTask(newTask);
 
-      return SuccessResponse.created(res, "Task criada com sucesso!", user);
+      return SuccessResponse.created(res, "Task criada com sucesso!", newTask);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }

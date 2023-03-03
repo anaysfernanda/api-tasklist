@@ -7,7 +7,7 @@ export const userRoutes = () => {
   const app = Router();
 
   app.post("/registration", new UserController().createUser);
-  app.get("/registration", new UserController().list);
+  app.get("/", new UserController().list);
   app.post(
     "/",
     LoginValidatorMiddleware.loginValidator,
