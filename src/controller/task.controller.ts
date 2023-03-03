@@ -33,7 +33,7 @@ export class TaskController {
   public create(req: Request, res: Response) {
     try {
       const { userId } = req.params;
-      const { title, description } = req.body;
+      const { title, description, archived } = req.body;
 
       const database = new UserDataBase();
       const user = database.getById(userId);
@@ -50,7 +50,7 @@ export class TaskController {
         return RequestError.fieldNotProvided(res, "Campo");
       }
 
-      const newTask = new Task(title, description);
+      const newTask = new Task(title, description, archived);
       user.addTask(newTask);
 
       return SuccessResponse.created(res, "Task criada com sucesso!", newTask);

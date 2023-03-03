@@ -2,7 +2,11 @@ import { v4 as createUuid } from "uuid";
 
 export class Task {
   private _id: string;
-  constructor(private _title: string, private _description: string) {
+  constructor(
+    private _title: string,
+    private _description: string,
+    private _archived: boolean
+  ) {
     this._id = createUuid();
   }
 
@@ -31,6 +35,7 @@ export class Task {
       id: this._id,
       detail: this._title,
       description: this._description,
+      archived: this._archived,
     };
   }
 }
