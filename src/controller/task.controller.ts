@@ -11,6 +11,7 @@ export class TaskController {
   public list(req: Request, res: Response) {
     try {
       const { userId } = req.params;
+      const { archived } = req.query;
 
       const database = new UserDataBase();
       const user = database.getById(userId);
@@ -23,7 +24,13 @@ export class TaskController {
         return RequestError.notFound(res, "Usuário");
       }
 
-      const allTasks = user.tasks;
+      let allTasks = user.tasks;
+
+      if (archived !== undefined) {
+        allTasks = allTasks.filter((task) => task.archived === true);
+      } else {
+        allTasks = allTasks.filter((task) => task.archived === false);
+      }
       return SuccessResponse.ok(res, "Lista de tasks.", allTasks);
     } catch (error: any) {
       return ServerError.genericError(res, error);
@@ -62,7 +69,7 @@ export class TaskController {
   public update(req: Request, res: Response) {
     try {
       const { userId, taskId } = req.params;
-      const { title, description } = req.body;
+      const { title, description, archived } = req.body;
 
       const database = new UserDataBase();
       const user = database.getById(userId);
@@ -92,6 +99,10 @@ export class TaskController {
 
       if (description) {
         task.description = description;
+      }
+
+      if (archived) {
+        task.archived = archived;
       }
 
       return SuccessResponse.created(res, "Task editada com sucesso!", task);

@@ -30,6 +30,14 @@ export class Task {
     this._description = description;
   }
 
+  public get archived() {
+    return this._archived;
+  }
+
+  public set archived(archived: boolean) {
+    this._archived = archived;
+  }
+
   public toJson() {
     return {
       id: this._id,
