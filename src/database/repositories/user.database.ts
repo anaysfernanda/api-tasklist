@@ -1,5 +1,5 @@
-import { User } from "../models/user.model";
-import { users } from "./users";
+import { User } from "../../models/user.model";
+import { users } from "../users";
 
 export class UserDataBase {
   public create(user: User) {

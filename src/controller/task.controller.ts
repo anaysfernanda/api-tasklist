@@ -4,7 +4,7 @@ import { Task } from "../models/task.model";
 import { User } from "../models/user.model";
 import { ServerError } from "../error/server.error";
 import { RequestError } from "../error/request.error";
-import { UserDataBase } from "../database/user.database";
+import { UserDataBase } from "../database/repositories/user.database";
 import { SuccessResponse } from "../util/success.response";
 
 export class TaskController {
@@ -44,6 +44,7 @@ export class TaskController {
 
       const database = new UserDataBase();
       const user = database.getById(userId);
+      console.log("salvar", req.body);
 
       if (!userId) {
         return RequestError.fieldNotProvided(res, "Id do usuário");
@@ -73,6 +74,7 @@ export class TaskController {
 
       const database = new UserDataBase();
       const user = database.getById(userId);
+      console.log("task", req.body);
 
       if (!userId) {
         return RequestError.fieldNotProvided(res, "Id do usuário");
@@ -104,6 +106,7 @@ export class TaskController {
       if (archived) {
         task.archived = archived;
       }
+      console.log(task.archived);
 
       return SuccessResponse.created(res, "Task editada com sucesso!", task);
     } catch (error: any) {
