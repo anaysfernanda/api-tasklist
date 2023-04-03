@@ -5,11 +5,7 @@ export class User {
   private _id: string;
   private _tasks: Task[];
 
-  constructor(
-    private _name: string,
-    private _email: string,
-    private _password: string
-  ) {
+  constructor(private _email: string, private _password: string) {
     this._id = creatUuid();
     this._tasks = [];
   }
@@ -28,14 +24,6 @@ export class User {
 
   public get id() {
     return this._id;
-  }
-
-  public get name() {
-    return this._name;
-  }
-
-  public set name(name: string) {
-    this._name = name;
   }
 
   public get email() {
@@ -58,8 +46,19 @@ export class User {
     return {
       id: this._id,
       email: this._email,
-      name: this._name,
       password: this._password,
     };
+  }
+
+  public static create(
+    id: string,
+    email: string,
+    password: string,
+    task?: Task[]
+  ) {
+    const user = new User(email, password);
+    user._id = id;
+
+    return user;
   }
 }

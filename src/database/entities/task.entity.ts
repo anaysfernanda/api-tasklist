@@ -1,9 +1,10 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { UserEntity } from "./user.entity";
 
 @Entity({
-  name: "task",
+  name: "tasks",
 })
-export class UserEntity {
+export class TaskEntity {
   @PrimaryColumn({
     name: "id_task",
   })

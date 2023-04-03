@@ -26,25 +26,27 @@ export class UserController {
     }
   }
 
-  public createUser(req: Request, res: Response) {
+  public async createUser(req: Request, res: Response) {
     try {
-      const { email, password, name } = req.body;
+      const { email, password } = req.body;
+      const user = new User(email, password);
+
       const dataBase = new UserDataBase();
-      const userList = new UserDataBase().list();
+      const userList = await dataBase.list();
 
-      if (email === "" || password === "" || name === "") {
-        return res.status(404).send({
-          ok: false,
-          message: "Preencha todos os campos!",
-        });
-      }
+      // if (email === "" || password === "") {
+      //   return res.status(404).send({
+      //     ok: false,
+      //     message: "Preencha todos os campos!",
+      //   });
+      // }
 
-      if (password.length < 6) {
-        return res.status(404).send({
-          ok: false,
-          message: "Preencha a senha com pelo menos 5 caractéres.",
-        });
-      }
+      // if (password.length < 6) {
+      //   return res.status(404).send({
+      //     ok: false,
+      //     message: "Preencha a senha com pelo menos 5 caractéres.",
+      //   });
+      // }
 
       const userExist = userList.some((user) => user.email === email);
       if (userExist) {
@@ -53,25 +55,25 @@ export class UserController {
           message: "Usuário já cadastrado. Volte e faça o login.",
         });
       }
-      const newUser = new User(name, email, password);
-
-      dataBase.create(newUser);
 
       return SuccessResponse.created(
         res,
         "O usuário foi criado com sucesso",
-        newUser.toJson()
+        user.toJson()
       );
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }
   }
 
-  public list(req: Request, res: Response) {
+  public async list(req: Request, res: Response) {
     try {
-      const userList = new UserDataBase().list();
+      const database = new UserDataBase();
+      const userList = await database.list();
+      console.log("userList", userList);
+      const list = userList.map((user) => user.toJson());
 
-      return SuccessResponse.ok(res, "Usuário listado com sucesso.", userList);
+      return SuccessResponse.ok(res, "Usuário listado com sucesso.", list);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }
