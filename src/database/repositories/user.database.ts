@@ -27,19 +27,26 @@ export class UserDataBase {
     return User.create(entity.id, entity.email, entity.password);
   }
 
-  public login(email: string, password: string) {
-    return users.find(
-      (user) => user.email === email && user.password === password
-    );
-  }
-
-  public getById(id: string) {
-    return users.find((user) => {
-      return user.id === id;
+  public async get(id: string) {
+    const result = await this.repository.findOneBy({
+      id,
     });
+
+    if (!result) {
+      return null;
+    }
+
+    return this.mapEntityToModel(result);
   }
 
-  public getIndex(id: string) {
-    return users.findIndex((user) => user.id === id);
+  public async login(user: any): Promise<any> {
+    const result = await this.repository.findOne({
+      where: {
+        email: user.email,
+        password: user.password,
+      },
+    });
+
+    return result;
   }
 }

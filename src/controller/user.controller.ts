@@ -6,21 +6,35 @@ import { SuccessResponse } from "../util/success.response";
 import { User } from "../models/user.model";
 
 export class UserController {
-  public login(req: Request, res: Response) {
+  public async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       const database = new UserDataBase();
-      const user = database.login(String(email), String(password));
 
-      if (!user) {
+      if (!email) {
+        return RequestError.notFound(res, "E-mail");
+      }
+
+      if (!password) {
+        return RequestError.notFound(res, "Senha");
+      }
+
+      const user = {
+        email,
+        password,
+      };
+
+      const result = await database.login(user);
+
+      const userId = {
+        id: result.id,
+      };
+
+      if (!userId) {
         return RequestError.notFound(res, "Usuário");
       }
 
-      return SuccessResponse.ok(
-        res,
-        "Usuário encontrado com sucesso.",
-        user.toJson()
-      );
+      return SuccessResponse.ok(res, "Usuário encontrado com sucesso.", userId);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }
@@ -32,34 +46,12 @@ export class UserController {
       const user = new User(email, password);
 
       const dataBase = new UserDataBase();
-      const userList = await dataBase.list();
-
-      // if (email === "" || password === "") {
-      //   return res.status(404).send({
-      //     ok: false,
-      //     message: "Preencha todos os campos!",
-      //   });
-      // }
-
-      // if (password.length < 6) {
-      //   return res.status(404).send({
-      //     ok: false,
-      //     message: "Preencha a senha com pelo menos 5 caractéres.",
-      //   });
-      // }
-
-      const userExist = userList.some((user) => user.email === email);
-      if (userExist) {
-        return res.status(404).send({
-          ok: false,
-          message: "Usuário já cadastrado. Volte e faça o login.",
-        });
-      }
+      const result = await dataBase.create(user);
 
       return SuccessResponse.created(
         res,
         "O usuário foi criado com sucesso",
-        user.toJson()
+        result.toJson()
       );
     } catch (error: any) {
       return ServerError.genericError(res, error);
@@ -70,10 +62,31 @@ export class UserController {
     try {
       const database = new UserDataBase();
       const userList = await database.list();
-      console.log("userList", userList);
+
       const list = userList.map((user) => user.toJson());
 
       return SuccessResponse.ok(res, "Usuário listado com sucesso.", list);
+    } catch (error: any) {
+      return ServerError.genericError(res, error);
+    }
+  }
+
+  public async getUser(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+
+      const database = new UserDataBase();
+      const user = await database.get(userId);
+
+      if (!user) {
+        return RequestError.notFound(res, "Usuário");
+      }
+
+      return SuccessResponse.ok(
+        res,
+        "Usuário listado com sucesso.",
+        user.toJson()
+      );
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }

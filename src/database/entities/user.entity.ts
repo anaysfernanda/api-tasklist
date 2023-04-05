@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
   name: "user",
 })
 export class UserEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -16,7 +16,6 @@ export class UserEntity {
   @Column({
     type: "timestamp",
     name: "dthr_criacao",
-    default: () => "CURRENT_TIMESTAMP",
   })
-  drhrCriacao: Date;
+  dthrAtualizacao: Date;
 }

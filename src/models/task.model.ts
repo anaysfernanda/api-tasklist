@@ -41,9 +41,21 @@ export class Task {
   public toJson() {
     return {
       id: this._id,
-      detail: this._title,
+      title: this._title,
       description: this._description,
       archived: this._archived,
     };
+  }
+
+  public static create(
+    id: string,
+    title: string,
+    description: string,
+    archived: boolean
+  ) {
+    const task = new Task(title, description, archived);
+    task._id = id;
+
+    return task;
   }
 }
