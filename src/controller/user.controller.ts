@@ -36,7 +36,7 @@ export class UserController {
 
       return SuccessResponse.ok(res, "Usuário encontrado com sucesso.", userId);
     } catch (error: any) {
-      return ServerError.genericError(res, error);
+      return ServerError.genericError(res, "Usuário não encontrado!");
     }
   }
 
