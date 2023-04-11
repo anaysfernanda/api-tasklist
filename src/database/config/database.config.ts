@@ -3,6 +3,14 @@ import { DataSource } from "typeorm";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+let entites = "src/database/entities/**/*.ts";
+let migrations = "src/database/migrations/**/*.ts";
+
+if (process.env.NODE_ENV !== "dev") {
+  entites = "build/database/entities/**/*.js";
+  migrations = "build/database/migrations/**/*.js";
+}
+
 export default new DataSource({
   type: "postgres",
   port: 5432,
@@ -14,7 +22,7 @@ export default new DataSource({
     rejectUnauthorized: false,
   },
   synchronize: false,
-  entities: ["src/database/entities/**/*.ts"],
-  migrations: ["src/database/migrations/**/*.ts"],
+  entities: [entites],
+  migrations: [migrations],
   schema: "tasklist",
 });
