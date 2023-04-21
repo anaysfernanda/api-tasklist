@@ -6,11 +6,11 @@ import { LoginValidatorMiddleware } from "../middleware/login-validator-middlewa
 export const userRoutes = () => {
   const app = Router();
 
-  app.post("/registration", new UserController().createUser);
+  app.post("/", new UserController().createUser);
   app.get("/", new UserController().list);
   app.get("/:userId", new UserController().getUser);
   app.post(
-    "/",
+    "/login",
     LoginValidatorMiddleware.loginValidator,
     new UserController().login
   );

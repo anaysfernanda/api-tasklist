@@ -31,7 +31,10 @@ export class UserController {
       };
 
       if (!userId) {
-        return RequestError.notFound(res, "Usuário");
+        return res.status(401).send({
+          ok: false,
+          message: "Usuário não autorizado.",
+        });
       }
 
       return SuccessResponse.ok(res, "Usuário encontrado com sucesso.", userId);
@@ -44,6 +47,14 @@ export class UserController {
     try {
       const { email, password } = req.body;
       const user = new User(email, password);
+
+      if (email === "" || password === "") {
+        return RequestError.fieldNotProvided(res, "Campos");
+      }
+
+      if (password.length < 7) {
+        return RequestError.fieldNotProvided(res, "Senha");
+      }
 
       const dataBase = new UserDataBase();
       const result = await dataBase.create(user);
