@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { TaskController } from "../controller/task.controller";
-import { UserController } from "../controller/user.controller";
+import { TaskController } from "../app/features/task/controller/task.controller";
+import { UserController } from "../app/features/user/controller/user.controller";
 import { LoginValidatorMiddleware } from "../middleware/login-validator-middleware";
 
 export const userRoutes = () => {

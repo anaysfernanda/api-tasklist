@@ -1,8 +1,8 @@
-import { Task } from "../../../../models/task.model";
+import { Task } from "../../../models/task.model";
 import { TypeormConnection } from "../../../../main/database/typeorm.connection";
-import { TaskEntity } from "../../../../database/entities/task.entity";
+import { TaskEntity } from "../../../shared/database/entities/task.entity";
 
-export class TaskDatabase {
+export class TaskRepository {
   private repository = TypeormConnection.connection.getRepository(TaskEntity);
 
   public async list(id: string) {
@@ -14,7 +14,7 @@ export class TaskDatabase {
       },
     });
 
-    return result.map((task) => TaskDatabase.mapEntityModel(task));
+    return result.map((task) => TaskRepository.mapEntityModel(task));
   }
 
   public static mapEntityModel(entity: TaskEntity): Task {
@@ -38,7 +38,7 @@ export class TaskDatabase {
     });
 
     const result = await this.repository.save(taskEntity);
-    return TaskDatabase.mapEntityModel(result);
+    return TaskRepository.mapEntityModel(result);
   }
 
   public async get(id: string) {

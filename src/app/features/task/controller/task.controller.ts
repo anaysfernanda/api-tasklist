@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
-import { Task } from "../models/task.model";
-import { User } from "../models/user.model";
-import { ServerError } from "../error/server.error";
-import { RequestError } from "../error/request.error";
-import { UserDataBase } from "../app/features/user/database/user.database";
-import { SuccessResponse } from "../util/success.response";
-import { TaskDatabase } from "../app/features/task/database/task.database";
+import { Task } from "../../../models/task.model";
+import { User } from "../../../models/user.model";
+import { ServerError } from "../../../shared/errors/server.error";
+import { RequestError } from "../../../shared/errors/request.error";
+import { UserRepository } from "../../user/database/user.repository";
+import { SuccessResponse } from "../../../shared/util/success.response";
+import { TaskRepository } from "../database/task.repository";
 import { error } from "console";
 
 export class TaskController {
   public async list(req: Request, res: Response) {
     try {
       const { userId } = req.params;
-      const database = new TaskDatabase();
+      const database = new TaskRepository();
       let list = await database.list(userId);
       let result = list.map((task) => task.toJson());
 
@@ -35,7 +35,7 @@ export class TaskController {
         return RequestError.fieldNotProvided(res, "Id do usuário");
       }
 
-      const database = new UserDataBase();
+      const database = new UserRepository();
       const user = await database.get(userId);
 
       if (!user) {
@@ -45,7 +45,7 @@ export class TaskController {
         return RequestError.fieldNotProvided(res, "Campo");
       }
       const newTask = new Task(title, description, archived);
-      const task = await new TaskDatabase().create(userId, newTask);
+      const task = await new TaskRepository().create(userId, newTask);
 
       const result = {};
       return SuccessResponse.created(
@@ -62,7 +62,7 @@ export class TaskController {
     try {
       const { userId, taskId } = req.params;
       const { title, description, archived } = req.body;
-      const user = new UserDataBase().get(userId);
+      const user = new UserRepository().get(userId);
 
       if (!userId) {
         return RequestError.fieldNotProvided(res, "Id do usuário");
@@ -74,7 +74,7 @@ export class TaskController {
         return RequestError.notFound(res, "Usuário");
       }
 
-      const database = new TaskDatabase();
+      const database = new TaskRepository();
       const result = await database.update(
         taskId,
         title,
@@ -95,7 +95,7 @@ export class TaskController {
   public async delete(req: Request, res: Response) {
     try {
       const { userId, taskId } = req.params;
-      const user = await new UserDataBase().get(userId);
+      const user = await new UserRepository().get(userId);
 
       if (!userId) {
         return RequestError.fieldNotProvided(res, "Usuário");
@@ -107,7 +107,7 @@ export class TaskController {
         return RequestError.notFound(res, "Usuário");
       }
 
-      const database = new TaskDatabase();
+      const database = new TaskRepository();
       const result = await database.delete(taskId);
 
       if (result === 0) {

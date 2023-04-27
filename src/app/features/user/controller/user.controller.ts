@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { UserDataBase } from "../app/features/user/database/user.database";
-import { RequestError } from "../error/request.error";
-import { ServerError } from "../error/server.error";
-import { SuccessResponse } from "../util/success.response";
-import { User } from "../models/user.model";
+import { UserRepository } from "../database/user.repository";
+import { RequestError } from "../../../shared/errors/request.error";
+import { ServerError } from "../../../shared/errors/server.error";
+import { SuccessResponse } from "../../../shared/util/success.response";
+import { User } from "../../../models/user.model";
 
 export class UserController {
   public async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const database = new UserDataBase();
+      const database = new UserRepository();
 
       if (!email) {
         return RequestError.notFound(res, "E-mail");
@@ -56,7 +56,7 @@ export class UserController {
         return RequestError.fieldNotProvided(res, "Senha");
       }
 
-      const dataBase = new UserDataBase();
+      const dataBase = new UserRepository();
       const result = await dataBase.create(user);
 
       return SuccessResponse.created(
@@ -71,7 +71,7 @@ export class UserController {
 
   public async list(req: Request, res: Response) {
     try {
-      const database = new UserDataBase();
+      const database = new UserRepository();
       const userList = await database.list();
 
       const list = userList.map((user) => user.toJson());
@@ -86,7 +86,7 @@ export class UserController {
     try {
       const { userId } = req.params;
 
-      const database = new UserDataBase();
+      const database = new UserRepository();
       const user = await database.get(userId);
 
       if (!user) {

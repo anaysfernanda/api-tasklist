@@ -1,12 +1,12 @@
 import { DataSource } from "typeorm";
 import { databaseEnv } from "../../app/envs/database.env";
 
-let entites = "src/database/entities/**/*.ts";
-let migrations = "src/database/migrations/**/*.ts";
+let entites = "src/app/shared/database/entities/**/*.ts";
+let migrations = "src/app/shared/database/migrations/**/*.ts";
 
 if (process.env.NODE_ENV !== "dev") {
-  entites = "build/database/entities/**/*.js";
-  migrations = "build/database/migrations/**/*.js";
+  entites = "build/app/shared/database/entities/**/*.js";
+  migrations = "build/app/shared/database/migrations/**/*.js";
 }
 
 export default new DataSource({
