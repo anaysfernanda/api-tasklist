@@ -52,7 +52,7 @@ export class UserController {
         return RequestError.fieldNotProvided(res, "Campos");
       }
 
-      if (password.length < 7) {
+      if (password.length < 6) {
         return RequestError.fieldNotProvided(res, "Senha");
       }
 
