@@ -1,10 +1,9 @@
-import { User } from "../../models/user.model";
-import { DatabaseConnection } from "../config/database.connection";
-import { UserEntity } from "../entities/user.entity";
-import { users } from "../users";
+import { User } from "../../../../models/user.model";
+import { TypeormConnection } from "../../../../main/database/typeorm.connection";
+import { UserEntity } from "../../../../database/entities/user.entity";
 
 export class UserDataBase {
-  private repository = DatabaseConnection.connection.getRepository(UserEntity);
+  private repository = TypeormConnection.connection.getRepository(UserEntity);
 
   public async create(user: User) {
     const userEntity = this.repository.create({

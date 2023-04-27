@@ -1,7 +1,7 @@
-import config from "./database.config";
+import config from "../config/typeorm.config";
 import { DataSource } from "typeorm";
 
-export class DatabaseConnection {
+export class TypeormConnection {
   private static _connection: DataSource;
 
   public static async connect() {

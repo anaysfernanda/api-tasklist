@@ -1,9 +1,9 @@
-import { Task } from "../../models/task.model";
-import { DatabaseConnection } from "../config/database.connection";
-import { TaskEntity } from "../entities/task.entity";
+import { Task } from "../../../../models/task.model";
+import { TypeormConnection } from "../../../../main/database/typeorm.connection";
+import { TaskEntity } from "../../../../database/entities/task.entity";
 
 export class TaskDatabase {
-  private repository = DatabaseConnection.connection.getRepository(TaskEntity);
+  private repository = TypeormConnection.connection.getRepository(TaskEntity);
 
   public async list(id: string) {
     const result = await this.repository.find({

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserDataBase } from "../database/repositories/user.database";
+import { UserDataBase } from "../app/features/user/database/user.database";
 import { RequestError } from "../error/request.error";
 import { ServerError } from "../error/server.error";
 import { SuccessResponse } from "../util/success.response";

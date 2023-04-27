@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { users } from "../database/users";
 import { Task } from "../models/task.model";
 import { User } from "../models/user.model";
 import { ServerError } from "../error/server.error";
 import { RequestError } from "../error/request.error";
-import { UserDataBase } from "../database/repositories/user.database";
+import { UserDataBase } from "../app/features/user/database/user.database";
 import { SuccessResponse } from "../util/success.response";
-import { TaskDatabase } from "../database/repositories/task.database";
+import { TaskDatabase } from "../app/features/task/database/task.database";
 import { error } from "console";
 
 export class TaskController {

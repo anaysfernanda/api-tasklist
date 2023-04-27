@@ -1,7 +1,5 @@
 import { DataSource } from "typeorm";
-
-import * as dotenv from "dotenv";
-dotenv.config();
+import { databaseEnv } from "../../app/envs/database.env";
 
 let entites = "src/database/entities/**/*.ts";
 let migrations = "src/database/migrations/**/*.ts";
@@ -13,11 +11,10 @@ if (process.env.NODE_ENV !== "dev") {
 
 export default new DataSource({
   type: "postgres",
-  port: 5432,
-  host: process.env.DB_HOST,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: databaseEnv.host,
+  username: databaseEnv.username,
+  password: databaseEnv.password,
+  database: databaseEnv.database,
   ssl: {
     rejectUnauthorized: false,
   },
