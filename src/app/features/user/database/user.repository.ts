@@ -13,16 +13,16 @@ export class UserRepository {
     });
 
     const result = await this.repository.save(userEntity);
-    return this.mapEntityToModel(result);
+    return UserRepository.mapEntityToModel(result);
   }
 
   public async list(): Promise<User[]> {
     const result = await this.repository.find();
 
-    return result.map((user: any) => this.mapEntityToModel(user));
+    return result.map((user: any) => UserRepository.mapEntityToModel(user));
   }
 
-  private mapEntityToModel(entity: UserEntity): User {
+  public static mapEntityToModel(entity: UserEntity): User {
     return User.create(entity.id, entity.email, entity.password);
   }
 
@@ -35,7 +35,18 @@ export class UserRepository {
       return null;
     }
 
-    return this.mapEntityToModel(result);
+    return UserRepository.mapEntityToModel(result);
+  }
+
+  public async getByEmail(email: string): Promise<User | null> {
+    const result = await this.repository.findOneBy({
+      email,
+    });
+    if (!result) {
+      return null;
+    }
+
+    return UserRepository.mapEntityToModel(result);
   }
 
   public async login(user: any): Promise<any> {

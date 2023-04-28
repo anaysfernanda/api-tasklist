@@ -4,6 +4,7 @@ import { RequestError } from "../../../shared/errors/request.error";
 import { ServerError } from "../../../shared/errors/server.error";
 import { SuccessResponse } from "../../../shared/util/success.response";
 import { User } from "../../../models/user.model";
+import { CreateUserUsecase } from "../usecases/create-user.usecase";
 
 export class UserController {
   public async login(req: Request, res: Response) {
@@ -46,24 +47,9 @@ export class UserController {
   public async createUser(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const user = new User(email, password);
+      const result = await new CreateUserUsecase().execute(req.body);
 
-      if (email === "" || password === "") {
-        return RequestError.fieldNotProvided(res, "Campos");
-      }
-
-      if (password.length < 6) {
-        return RequestError.fieldNotProvided(res, "Senha");
-      }
-
-      const dataBase = new UserRepository();
-      const result = await dataBase.create(user);
-
-      return SuccessResponse.created(
-        res,
-        "O usuário foi criado com sucesso",
-        result.toJson()
-      );
+      return res.status(result.code).send(result);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }
