@@ -8,7 +8,7 @@
     "dev": "ts-node-dev --respawn ./src/index.ts",
     "dev:debug": "ts-node-dev --inspect --respawn ./src/index.ts",
     "start": "node ./build/index.js",
-    "postinstall": "tsc",
+    "postinstall": "npm install typescript && npx tsc",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm migration:generate -- -d ./src/main/config/typeorm.config.ts",
     "migration:create": "npm run typeorm migration:create",

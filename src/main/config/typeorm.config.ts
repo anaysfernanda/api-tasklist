@@ -4,7 +4,7 @@ import { databaseEnv } from "../../app/envs/database.env";
 let entites = "src/app/shared/database/entities/**/*.ts";
 let migrations = "src/app/shared/database/migrations/**/*.ts";
 
-if (process.env.NODE_ENV !== "dev") {
+if (databaseEnv.nodeEnv !== "dev") {
   entites = "build/app/shared/database/entities/**/*.js";
   migrations = "build/app/shared/database/migrations/**/*.js";
 }
