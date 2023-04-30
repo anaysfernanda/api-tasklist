@@ -25,7 +25,6 @@ export class CreateUserUsecase {
     const user = new User(data.email, data.password);
     const result = await repository.create(user);
 
-    await new CacheRepository().delete(`getUser${user.id}`);
     await new CacheRepository().delete(`userList`);
 
     return {
