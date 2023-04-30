@@ -11,7 +11,7 @@ export class ListTasksUsecase {
       return {
         ok: true,
         code: 200,
-        message: "Usuários listados com sucesso! - Cache",
+        message: "Tasks listadas com sucesso! - Cache",
         data: cacheResult,
       };
     }
@@ -25,7 +25,7 @@ export class ListTasksUsecase {
     return {
       ok: true,
       code: 200,
-      message: "Usuários listados com sucesso!",
+      message: "Tasks listadas com sucesso!",
       data: result,
     };
   }

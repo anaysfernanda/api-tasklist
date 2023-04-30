@@ -11,6 +11,7 @@ import { ListTasksUsecase } from "../usecases/list-tasks.usecase";
 import { CreateTaskUsecase } from "../usecases/create-task.usecase";
 import { UpdateTaskUsecase } from "../usecases/update-task.usecase";
 import { DeleteTaskUsecase } from "../usecases/delete-task.usecase";
+import { GetTaskUsecase } from "../usecases/get-task.usecase";
 
 export class TaskController {
   public async list(req: Request, res: Response) {
@@ -63,6 +64,17 @@ export class TaskController {
     try {
       const { userId, taskId } = req.params;
       const result = await new DeleteTaskUsecase().execute({ userId, taskId });
+
+      return res.status(result.code).send(result);
+    } catch (error: any) {
+      return ServerError.genericError(res, error);
+    }
+  }
+
+  public async get(req: Request, res: Response) {
+    try {
+      const { userId, taskId } = req.params;
+      const result = await new GetTaskUsecase().execute({ userId, taskId });
 
       return res.status(result.code).send(result);
     } catch (error: any) {
