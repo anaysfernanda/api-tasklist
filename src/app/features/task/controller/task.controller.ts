@@ -8,6 +8,7 @@ import { SuccessResponse } from "../../../shared/util/success.response";
 import { TaskRepository } from "../database/task.repository";
 import { error } from "console";
 import { ListTasksUsecase } from "../usecases/list-tasks.usecase";
+import { CreateTaskUsecase } from "../usecases/create-task.usecase";
 
 export class TaskController {
   public async list(req: Request, res: Response) {
@@ -26,28 +27,14 @@ export class TaskController {
       const { userId } = req.params;
       const { title, description, archived } = req.body;
 
-      if (!userId) {
-        return RequestError.fieldNotProvided(res, "Id do usuário");
-      }
+      const result = await new CreateTaskUsecase().execute({
+        userId,
+        title,
+        description,
+        archived,
+      });
 
-      const database = new UserRepository();
-      const user = await database.get(userId);
-
-      if (!user) {
-        return RequestError.notFound(res, "Usuário");
-      }
-      if (title === "" || description === "") {
-        return RequestError.fieldNotProvided(res, "Campo");
-      }
-      const newTask = new Task(title, description, archived);
-      const task = await new TaskRepository().create(userId, newTask);
-
-      const result = {};
-      return SuccessResponse.created(
-        res,
-        "Task criada com sucesso!",
-        task.toJson()
-      );
+      return res.status(result.code).send(result);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }

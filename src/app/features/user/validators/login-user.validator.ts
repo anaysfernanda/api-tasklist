@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { RequestError } from "../../../shared/errors/request.error";
 import { UserRepository } from "../database/user.repository";
-import { SuccessResponse } from "../../../shared/util/success.response";
 import { ServerError } from "../../../shared/errors/server.error";
 
 export class LoginValidator {
