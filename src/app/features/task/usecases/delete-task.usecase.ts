@@ -1,3 +1,4 @@
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { Return } from "../../../shared/util/return.contract";
 import { UserRepository } from "../../user/database/user.repository";
 import { TaskRepository } from "../database/task.repository";
@@ -21,6 +22,9 @@ export class DeleteTaskUsecase {
         message: "Task não encontrada!",
       };
     }
+
+    await new CacheRepository().delete(`listaTasks`);
+    await new CacheRepository().delete(`getTask${data.taskId}`);
 
     return {
       ok: true,
