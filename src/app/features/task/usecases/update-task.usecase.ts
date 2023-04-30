@@ -31,8 +31,8 @@ export class UpdateTaskUsecase {
       };
     }
 
-    await new CacheRepository().delete(`listaTasks`);
-    await new CacheRepository().delete(`getTask${data.taskId}`);
+    await new CacheRepository().delete(`listaTasks:${data.userId}`);
+    await new CacheRepository().delete(`getTask:${data.taskId}`);
 
     return {
       ok: true,

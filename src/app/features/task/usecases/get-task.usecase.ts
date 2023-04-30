@@ -13,7 +13,7 @@ export class GetTaskUsecase {
     const user = new UserRepository().get(data.userId);
 
     const cacheRepository = new CacheRepository();
-    const cacheResult = await cacheRepository.get(`getTask${data.taskId}`);
+    const cacheResult = await cacheRepository.get(`getTask:${data.taskId}`);
 
     if (cacheResult) {
       return {
@@ -35,7 +35,7 @@ export class GetTaskUsecase {
       };
     }
 
-    await cacheRepository.set(`getTask${data.taskId}`, task);
+    await cacheRepository.set(`getTask:${data.taskId}`, task);
 
     return {
       ok: true,

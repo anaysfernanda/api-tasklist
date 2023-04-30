@@ -5,7 +5,7 @@ import { TaskRepository } from "../database/task.repository";
 export class ListTasksUsecase {
   public async execute(userId: string): Promise<Return> {
     const cacheRepository = new CacheRepository();
-    const cacheResult = await cacheRepository.get("listaTasks");
+    const cacheResult = await cacheRepository.get(`listaTasks:${userId}`);
 
     if (cacheResult) {
       return {
@@ -20,7 +20,7 @@ export class ListTasksUsecase {
     let list = await database.list(userId);
     let result = list.map((task) => task.toJson());
 
-    await cacheRepository.set(`listaTasks`, result);
+    await cacheRepository.set(`listaTasks:${userId}`, result);
 
     return {
       ok: true,
