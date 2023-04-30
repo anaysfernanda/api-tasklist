@@ -5,40 +5,17 @@ import { ServerError } from "../../../shared/errors/server.error";
 import { SuccessResponse } from "../../../shared/util/success.response";
 import { User } from "../../../models/user.model";
 import { CreateUserUsecase } from "../usecases/create-user.usecase";
+import { ListUserUsecase } from "../usecases/list-user.usecase";
+import { GetUserUsecase } from "../usecases/get-user.usecase";
+import { LoginUsecase } from "../usecases/login-user.usecase";
 
 export class UserController {
   public async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const database = new UserRepository();
+      const result = await new LoginUsecase().execute(req.body);
 
-      if (!email) {
-        return RequestError.notFound(res, "E-mail");
-      }
-
-      if (!password) {
-        return RequestError.notFound(res, "Senha");
-      }
-
-      const user = {
-        email,
-        password,
-      };
-
-      const result = await database.login(user);
-
-      const userId = {
-        id: result.id,
-      };
-
-      if (!userId) {
-        return res.status(401).send({
-          ok: false,
-          message: "Usuário não autorizado.",
-        });
-      }
-
-      return SuccessResponse.ok(res, "Usuário encontrado com sucesso.", userId);
+      return res.status(result.code).send(result);
     } catch (error: any) {
       return ServerError.genericError(res, "Usuário não encontrado!");
     }
@@ -57,12 +34,9 @@ export class UserController {
 
   public async list(req: Request, res: Response) {
     try {
-      const database = new UserRepository();
-      const userList = await database.list();
+      const result = await new ListUserUsecase().execute();
 
-      const list = userList.map((user) => user.toJson());
-
-      return SuccessResponse.ok(res, "Usuário listado com sucesso.", list);
+      return res.status(result.code).send(result);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }
@@ -72,18 +46,9 @@ export class UserController {
     try {
       const { userId } = req.params;
 
-      const database = new UserRepository();
-      const user = await database.get(userId);
+      const result = await new GetUserUsecase().execute(userId);
 
-      if (!user) {
-        return RequestError.notFound(res, "Usuário");
-      }
-
-      return SuccessResponse.ok(
-        res,
-        "Usuário listado com sucesso.",
-        user.toJson()
-      );
+      return res.status(result.code).send(result);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }

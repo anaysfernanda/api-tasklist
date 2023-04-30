@@ -7,20 +7,15 @@ import { UserRepository } from "../../user/database/user.repository";
 import { SuccessResponse } from "../../../shared/util/success.response";
 import { TaskRepository } from "../database/task.repository";
 import { error } from "console";
+import { ListTasksUsecase } from "../usecases/list-tasks.usecase";
 
 export class TaskController {
   public async list(req: Request, res: Response) {
     try {
       const { userId } = req.params;
-      const database = new TaskRepository();
-      let list = await database.list(userId);
-      let result = list.map((task) => task.toJson());
+      const result = await new ListTasksUsecase().execute(userId);
 
-      if (!userId) {
-        return RequestError.fieldNotProvided(res, "Id do usuário");
-      }
-
-      return SuccessResponse.ok(res, "Lista de tasks.", result);
+      return res.status(result.code).send(result);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }

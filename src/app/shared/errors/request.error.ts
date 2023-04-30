@@ -14,4 +14,11 @@ export class RequestError {
       message: entity + " não encontrado.",
     });
   }
+
+  public static unauthorized(res: Response, field: string) {
+    return res.status(401).send({
+      ok: false,
+      message: field + " não autorizado(a).",
+    });
+  }
 }
