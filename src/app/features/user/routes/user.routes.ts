@@ -15,5 +15,6 @@ export const userRoutes2 = () => {
   router.get("/", new UserController().list);
   router.get("/:userId", new UserController().getUser);
   router.post("/login", LoginValidator.validate, new UserController().login);
+
   return router;
 };

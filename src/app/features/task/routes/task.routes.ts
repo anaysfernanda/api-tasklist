@@ -10,6 +10,7 @@ export const taskRoutes = () => {
     CreateTaskValidator.validate,
     new TaskController().create
   );
+  router.put("/:userId/tasks/:taskId", new TaskController().update);
 
   return router;
 };

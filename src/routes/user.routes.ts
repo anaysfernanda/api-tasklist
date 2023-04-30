@@ -12,10 +12,10 @@ export const userRoutes = () => {
   //   LoginValidatorMiddleware.loginValidator,
   //   new UserController().login
   // );
-  app.post("/:userId/tasks", new TaskController().create);
+  // app.post("/:userId/tasks", new TaskController().create);
   // app.get("/:userId/tasks", new TaskController().list);
   app.delete("/:userId/tasks/:taskId", new TaskController().delete);
-  app.put("/:userId/tasks/:taskId", new TaskController().update);
+  // app.put("/:userId/tasks/:taskId", new TaskController().update);
 
   return app;
 };
