@@ -26,6 +26,7 @@ export class GetTaskUsecase {
 
     const database = new TaskRepository();
     let task = await database.get(data.taskId);
+
     if (task === 0) {
       return {
         ok: false,
@@ -33,6 +34,7 @@ export class GetTaskUsecase {
         message: "Task não encontrada!",
       };
     }
+
     await cacheRepository.set(`getTask${data.taskId}`, task);
 
     return {
