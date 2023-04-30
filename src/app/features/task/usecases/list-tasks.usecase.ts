@@ -20,7 +20,7 @@ export class ListTasksUsecase {
     let list = await database.list(userId);
     let result = list.map((task) => task.toJson());
 
-    await cacheRepository.set(`listaTasks:${userId}`, result);
+    await cacheRepository.setEx(`listaTasks:${userId}`, result, 3600);
 
     return {
       ok: true,

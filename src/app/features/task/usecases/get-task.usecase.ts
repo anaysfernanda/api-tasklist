@@ -35,7 +35,7 @@ export class GetTaskUsecase {
       };
     }
 
-    await cacheRepository.set(`getTask:${data.taskId}`, task);
+    await cacheRepository.setEx(`getTask:${data.taskId}`, task, 3600);
 
     return {
       ok: true,

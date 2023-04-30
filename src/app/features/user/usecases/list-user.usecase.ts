@@ -19,7 +19,7 @@ export class ListUserUsecase {
 
     let user = await database.list();
     const result = user.map((user) => user.toJson());
-    await cacheRepository.set(`userList`, result);
+    await cacheRepository.setEx(`userList`, result, 3600);
 
     return {
       ok: true,

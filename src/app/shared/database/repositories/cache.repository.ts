@@ -17,6 +17,10 @@ export class CacheRepository {
     await this.repository.del(key);
   }
 
+  public async setEx(key: string, value: any, ttl: number) {
+    await this.repository.set(key, JSON.stringify(value), "EX", ttl);
+  }
+
   public async set(key: string, value: any): Promise<any> {
     await this.repository.set(key, JSON.stringify(value));
   }
