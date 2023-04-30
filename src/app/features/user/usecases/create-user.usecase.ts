@@ -26,7 +26,7 @@ export class CreateUserUsecase {
     const result = await repository.create(user);
 
     await new CacheRepository().delete(`getUser${user.id}`);
-    await new CacheRepository().delete(`listUser`);
+    await new CacheRepository().delete(`userList`);
 
     return {
       ok: true,

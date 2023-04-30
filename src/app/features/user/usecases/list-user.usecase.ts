@@ -5,7 +5,7 @@ import { UserRepository } from "../database/user.repository";
 export class ListUserUsecase {
   public async execute(): Promise<Return> {
     const cacheRepository = new CacheRepository();
-    const cacheResult = await cacheRepository.get("listUser");
+    const cacheResult = await cacheRepository.get("userList");
 
     if (cacheResult) {
       return {
@@ -19,7 +19,7 @@ export class ListUserUsecase {
 
     let user = await database.list();
     const result = user.map((user) => user.toJson());
-    await cacheRepository.set(`listUser`, result);
+    await cacheRepository.set(`userList`, result);
 
     return {
       ok: true,
