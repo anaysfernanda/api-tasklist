@@ -16,6 +16,7 @@ export class CreateTaskUsecase {
     const task = await new TaskRepository().create(data.userId, newTask);
 
     await new CacheRepository().delete(`listaTasks`);
+    await new CacheRepository().delete(`getTask${newTask.id}`);
 
     return {
       ok: true,
