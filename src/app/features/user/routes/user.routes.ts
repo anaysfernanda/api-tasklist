@@ -4,7 +4,7 @@ import { CreateUserValidator } from "../validators/create-user.validator";
 import { TaskController } from "../../task/controller/task.controller";
 import { LoginValidator } from "../validators/login-user.validator";
 
-export const userRoutes2 = () => {
+export const userRoutes = () => {
   const router = Router();
 
   router.post(

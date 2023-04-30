@@ -1,4 +1,5 @@
 import { User } from "../../../models/user.model";
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { Return } from "../../../shared/util/return.contract";
 import { UserRepository } from "../database/user.repository";
 
@@ -23,6 +24,9 @@ export class CreateUserUsecase {
 
     const user = new User(data.email, data.password);
     const result = await repository.create(user);
+
+    await new CacheRepository().delete(`getUser${user.id}`);
+    await new CacheRepository().delete(`listUser`);
 
     return {
       ok: true,

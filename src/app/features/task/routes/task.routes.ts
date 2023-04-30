@@ -11,6 +11,7 @@ export const taskRoutes = () => {
     new TaskController().create
   );
   router.put("/:userId/tasks/:taskId", new TaskController().update);
+  router.delete("/:userId/tasks/:taskId", new TaskController().delete);
 
   return router;
 };

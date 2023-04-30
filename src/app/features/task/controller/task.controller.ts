@@ -10,6 +10,7 @@ import { error } from "console";
 import { ListTasksUsecase } from "../usecases/list-tasks.usecase";
 import { CreateTaskUsecase } from "../usecases/create-task.usecase";
 import { UpdateTaskUsecase } from "../usecases/update-task.usecase";
+import { DeleteTaskUsecase } from "../usecases/delete-task.usecase";
 
 export class TaskController {
   public async list(req: Request, res: Response) {
@@ -61,26 +62,9 @@ export class TaskController {
   public async delete(req: Request, res: Response) {
     try {
       const { userId, taskId } = req.params;
-      const user = await new UserRepository().get(userId);
+      const result = await new DeleteTaskUsecase().execute({ userId, taskId });
 
-      if (!userId) {
-        return RequestError.fieldNotProvided(res, "Usuário");
-      }
-      if (!taskId) {
-        return RequestError.fieldNotProvided(res, "Task");
-      }
-      if (!user) {
-        return RequestError.notFound(res, "Usuário");
-      }
-
-      const database = new TaskRepository();
-      const result = await database.delete(taskId);
-
-      if (result === 0) {
-        return RequestError.notFound(res, "Task");
-      }
-
-      return SuccessResponse.created(res, "Task deletada com sucesso!", taskId);
+      return res.status(result.code).send(result);
     } catch (error: any) {
       return ServerError.genericError(res, error);
     }
