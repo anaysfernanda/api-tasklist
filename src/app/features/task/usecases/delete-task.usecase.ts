@@ -24,8 +24,10 @@ export class DeleteTaskUsecase {
       };
     }
     await database.delete(data.taskId);
+    await new CacheRepository().delete(`listaTasks:${data.userId}-${true}`);
+    await new CacheRepository().delete(`listaTasks:${data.userId}-${false}`);
     await new CacheRepository().delete(
-      `listaTasks:${data.userId}-${task.archived}`
+      `listaTasks:${data.userId}-${undefined}`
     );
     await new CacheRepository().delete(`getTask:${data.taskId}`);
 

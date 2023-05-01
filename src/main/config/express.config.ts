@@ -9,7 +9,7 @@ export const createApp = () => {
   app.use(cors());
 
   app.use("/user", userRoutes());
-  app.use("/task", taskRoutes());
+  app.use("/user", taskRoutes());
 
   return app;
 };

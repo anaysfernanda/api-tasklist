@@ -19,6 +19,11 @@ export class CreateTaskUsecase {
       `listaTasks:${data.userId}-${data.archived}`
     );
     await new CacheRepository().delete(`getTask:${newTask.id}`);
+    await new CacheRepository().delete(`listaTasks:${data.userId}-${true}`);
+    await new CacheRepository().delete(`listaTasks:${data.userId}-${false}`);
+    await new CacheRepository().delete(
+      `listaTasks:${data.userId}-${undefined}`
+    );
 
     return {
       ok: true,
