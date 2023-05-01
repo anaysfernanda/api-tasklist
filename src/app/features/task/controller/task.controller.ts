@@ -17,7 +17,8 @@ export class TaskController {
   public async list(req: Request, res: Response) {
     try {
       const { userId } = req.params;
-      const result = await new ListTasksUsecase().execute(userId);
+      const { archived } = req.query;
+      const result = await new ListTasksUsecase().execute(userId, archived);
 
       return res.status(result.code).send(result);
     } catch (error: any) {

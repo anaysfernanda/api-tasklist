@@ -16,13 +16,13 @@ export class UpdateTaskUsecase {
     const user = new UserRepository().get(data.userId);
 
     const database = new TaskRepository();
+
     const result = await database.update(
       data.taskId,
       data.title,
       data.description,
       data.archived
     );
-
     if (!result) {
       return {
         ok: false,
@@ -31,7 +31,12 @@ export class UpdateTaskUsecase {
       };
     }
 
-    await new CacheRepository().delete(`listaTasks:${data.userId}`);
+    await new CacheRepository().delete(`listaTasks:${data.userId}-${true}`);
+    await new CacheRepository().delete(`listaTasks:${data.userId}-${false}`);
+    await new CacheRepository().delete(
+      `listaTasks:${data.userId}-${undefined}`
+    );
+
     await new CacheRepository().delete(`getTask:${data.taskId}`);
 
     return {

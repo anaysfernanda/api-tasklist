@@ -3,9 +3,11 @@ import { Return } from "../../../shared/util/return.contract";
 import { TaskRepository } from "../database/task.repository";
 
 export class ListTasksUsecase {
-  public async execute(userId: string): Promise<Return> {
+  public async execute(userId: string, archived: any): Promise<Return> {
     const cacheRepository = new CacheRepository();
-    const cacheResult = await cacheRepository.get(`listaTasks:${userId}`);
+    const cacheResult = await cacheRepository.get(
+      `listaTasks:${userId}-${archived}`
+    );
 
     if (cacheResult) {
       return {
@@ -17,10 +19,14 @@ export class ListTasksUsecase {
     }
 
     const database = new TaskRepository();
-    let list = await database.list(userId);
+    let list = await database.list(userId, archived);
     let result = list.map((task) => task.toJson());
 
-    await cacheRepository.setEx(`listaTasks:${userId}`, result, 3600);
+    await cacheRepository.setEx(
+      `listaTasks:${userId}-${archived}`,
+      result,
+      3600
+    );
 
     return {
       ok: true,

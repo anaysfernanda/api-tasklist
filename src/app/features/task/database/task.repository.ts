@@ -5,13 +5,16 @@ import { TaskEntity } from "../../../shared/database/entities/task.entity";
 export class TaskRepository {
   private repository = TypeormConnection.connection.getRepository(TaskEntity);
 
-  public async list(id: string) {
-    const result = await this.repository.find({
-      where: {
-        user: {
-          id,
-        },
+  public async list(id: string, archived?: any) {
+    const where = {
+      user: {
+        id,
       },
+    };
+    const filterArchived =
+      archived === null || archived === undefined ? {} : { archived };
+    const result = await this.repository.find({
+      where: { ...where, ...filterArchived },
     });
 
     return result.map((task) => TaskRepository.mapEntityModel(task));

@@ -21,4 +21,11 @@ export class RequestError {
       message: field + " não autorizado(a).",
     });
   }
+
+  public static invalidQueryParam(res: Response, field: string) {
+    return res.status(400).send({
+      ok: false,
+      message: "Valor inválido para " + field,
+    });
+  }
 }

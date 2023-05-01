@@ -13,17 +13,20 @@ export class DeleteTaskUsecase {
     const user = new UserRepository().get(data.userId);
 
     const database = new TaskRepository();
-    const result = await database.delete(data.taskId);
 
-    if (result === 0) {
+    const task = await database.get(data.taskId);
+
+    if (task === 0) {
       return {
         ok: false,
         code: 404,
         message: "Task não encontrada!",
       };
     }
-
-    await new CacheRepository().delete(`listaTasks:${data.userId}`);
+    await database.delete(data.taskId);
+    await new CacheRepository().delete(
+      `listaTasks:${data.userId}-${task.archived}`
+    );
     await new CacheRepository().delete(`getTask:${data.taskId}`);
 
     return {

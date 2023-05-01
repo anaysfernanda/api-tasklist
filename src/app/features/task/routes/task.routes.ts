@@ -1,10 +1,15 @@
 import { Router } from "express";
 import { TaskController } from "../../task/controller/task.controller";
 import { CreateTaskValidator } from "../validator/create-task.validator";
+import { FilterTaskValidator } from "../validator/filter-task.validator";
 
 export const taskRoutes = () => {
   const router = Router();
-  router.get("/:userId/tasks", new TaskController().list);
+  router.get(
+    "/:userId/tasks",
+    FilterTaskValidator.validate,
+    new TaskController().list
+  );
   router.get("/:userId/tasks/:taskId", new TaskController().get);
   router.post(
     "/:userId/tasks",
