@@ -24,29 +24,29 @@ describe("Create User Usecase", () => {
 
   const user = new User("any_email", "any_password");
 
-  test("Deveria retornar 404 se o usuário não for encontrado.", async () => {
-    jest.spyOn(UserRepository.prototype, "get").mockResolvedValue(null);
+  test("Deveria retornar 401 se o usuário não for autorizado.", async () => {
+    jest.spyOn(UserRepository.prototype, "login").mockResolvedValue(null);
 
     const sut = makeSut();
 
-    const result = await sut.execute(user.id);
+    const result = await sut.execute(user);
 
     expect(result).toBeDefined();
     expect(result).toHaveProperty("ok", false);
-    expect(result).toHaveProperty("code", 404);
-    expect(result).toHaveProperty("message", "Usuário não encontrado!");
+    expect(result).toHaveProperty("code", 401);
+    expect(result).toHaveProperty("message", "Usuário não autorizado.");
   });
 
-  test("Deveria retornar 200 se o usuário for criado com sucesso. ", async () => {
-    jest.spyOn(UserRepository.prototype, "get").mockResolvedValue(user);
+  test("Deveria retornar 200 se o usuário for logado com sucesso. ", async () => {
+    jest.spyOn(UserRepository.prototype, "login").mockResolvedValue(user);
     const sut = makeSut();
 
-    const result = await sut.execute(user.id);
+    const result = await sut.execute(user);
 
     expect(result).toBeDefined();
     expect(result).toHaveProperty("ok", true);
     expect(result).toHaveProperty("code", 200);
-    expect(result.message).toEqual("Usuário obtido com sucesso!");
+    expect(result.message).toEqual("Login feito com sucesso!");
     expect(result).toBeTruthy();
     expect(result).toHaveProperty("data");
     expect(result.data.id).toHaveLength(36);
