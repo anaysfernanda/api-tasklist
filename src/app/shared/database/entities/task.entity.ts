@@ -30,13 +30,13 @@ export class TaskEntity {
   archived: boolean;
 
   @CreateDateColumn({
-    type: "timestamp",
+    // type: "timestamp",
     name: "dthr_criacao",
   })
   drhrCriacao: Date;
 
   @UpdateDateColumn({
-    type: "timestamp",
+    // type: "timestamp",
     name: "dthr_atualizacao",
   })
   drhrAtualizacao: Date;

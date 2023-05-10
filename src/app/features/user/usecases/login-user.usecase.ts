@@ -11,6 +11,14 @@ export class LoginUsecase {
     const repository = new UserRepository();
     const user = await repository.login(data);
 
+    if (!user) {
+      return {
+        ok: false,
+        code: 401,
+        message: "Usuário não autorizado.",
+      };
+    }
+
     return {
       ok: true,
       code: 200,

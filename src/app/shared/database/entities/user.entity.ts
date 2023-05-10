@@ -19,7 +19,7 @@ export class UserEntity {
   password: string;
 
   @CreateDateColumn({
-    type: "timestamp",
+    // type: "timestamp",
     name: "dthr_criacao",
   })
   dthrAtualizacao: Date;

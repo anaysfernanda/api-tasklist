@@ -20,22 +20,6 @@ export class LoginValidator {
         return RequestError.notFound(res, "Senha");
       }
 
-      const user = {
-        email,
-        password,
-      };
-
-      const database = new UserRepository();
-      const result = await database.login(user);
-
-      const userId = {
-        id: result.id,
-      };
-
-      if (!userId) {
-        return RequestError.unauthorized(res, "Usuário");
-      }
-
       next();
     } catch (error: any) {
       return ServerError.genericError(res, "E-mail e/ou senha incorreta!");

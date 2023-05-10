@@ -9,7 +9,7 @@ if (databaseEnv.nodeEnv !== "dev") {
   migrations = "build/app/shared/database/migrations/**/*.js";
 }
 
-export default new DataSource({
+let source = new DataSource({
   type: "postgres",
   host: databaseEnv.host,
   username: databaseEnv.username,
@@ -23,3 +23,15 @@ export default new DataSource({
   migrations: [migrations],
   schema: "tasklist",
 });
+
+if (databaseEnv.apiEnv === "test") {
+  source = new DataSource({
+    type: "sqlite",
+    database: "database.sqlite3",
+    synchronize: false,
+    entities: ["src/app/shared/database/entities/**/*.ts"],
+    migrations: ["tests/app/shared/database/migrations/**/*.ts"],
+  });
+}
+
+export default source;
