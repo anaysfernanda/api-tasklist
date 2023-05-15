@@ -13,16 +13,16 @@ export class LoginValidator {
       const { email, password } = req.body;
 
       if (!email) {
-        return RequestError.notFound(res, "E-mail");
+        return RequestError.fieldNotProvided(res, "E-mail");
       }
 
       if (!password) {
-        return RequestError.notFound(res, "Senha");
+        return RequestError.fieldNotProvided(res, "Senha");
       }
 
       next();
     } catch (error: any) {
-      return ServerError.genericError(res, "E-mail e/ou senha incorreta!");
+      return ServerError.genericError(res, error);
     }
   }
 }

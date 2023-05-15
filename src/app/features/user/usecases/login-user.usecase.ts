@@ -9,7 +9,7 @@ interface LoginParams {
 export class LoginUsecase {
   public async execute(data: LoginParams): Promise<Return> {
     const repository = new UserRepository();
-    const user = await repository.login(data);
+    const user = await repository.login(data.email, data.password);
 
     if (!user) {
       return {

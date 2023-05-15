@@ -3,17 +3,10 @@ import { Return } from "../../../shared/util/return.contract";
 import { UserRepository } from "../../user/database/user.repository";
 import { TaskRepository } from "../database/task.repository";
 
-interface GetTaskParams {
-  userId: string;
-  taskId: string;
-}
-
 export class GetTaskUsecase {
-  public async execute(data: GetTaskParams): Promise<Return> {
-    const user = new UserRepository().get(data.userId);
-
+  public async execute(taskId: string): Promise<Return> {
     const cacheRepository = new CacheRepository();
-    const cacheResult = await cacheRepository.get(`getTask:${data.taskId}`);
+    const cacheResult = await cacheRepository.get(`getTask:${taskId}`);
 
     if (cacheResult) {
       return {
@@ -25,7 +18,7 @@ export class GetTaskUsecase {
     }
 
     const database = new TaskRepository();
-    let task = await database.get(data.taskId);
+    let task = await database.get(taskId);
 
     if (task === 0) {
       return {
@@ -35,7 +28,7 @@ export class GetTaskUsecase {
       };
     }
 
-    await cacheRepository.setEx(`getTask:${data.taskId}`, task, 3600);
+    await cacheRepository.setEx(`getTask:${taskId}`, task, 3600);
 
     return {
       ok: true,

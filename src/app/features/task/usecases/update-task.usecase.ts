@@ -13,7 +13,15 @@ interface UpdateTaskParams {
 
 export class UpdateTaskUsecase {
   public async execute(data: UpdateTaskParams): Promise<Return> {
-    const user = new UserRepository().get(data.userId);
+    const user = await new UserRepository().get(data.userId);
+
+    if (!user) {
+      return {
+        ok: false,
+        code: 404,
+        message: "Usuário não encontrado!",
+      };
+    }
 
     const database = new TaskRepository();
 

@@ -4,7 +4,7 @@ export class RequestError {
   public static fieldNotProvided(res: Response, field: string) {
     return res.status(400).send({
       ok: false,
-      message: field + " não fornecido(s).",
+      message: field + " não fornecido(a).",
     });
   }
 

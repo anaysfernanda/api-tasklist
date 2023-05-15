@@ -49,14 +49,18 @@ export class UserRepository {
     return UserRepository.mapEntityToModel(result);
   }
 
-  public async login(user: any): Promise<any> {
+  public async login(email: string, password: string): Promise<User | null> {
     const result = await this.repository.findOne({
       where: {
-        email: user.email,
-        password: user.password,
+        email,
+        password,
       },
     });
 
-    return result;
+    if (!result) {
+      return null;
+    }
+
+    return UserRepository.mapEntityToModel(result);
   }
 }

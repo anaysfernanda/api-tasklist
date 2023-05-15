@@ -11,8 +11,12 @@ export class CreateUserValidator {
     try {
       const { email, password } = req.body;
 
-      if (email === "" || password === "") {
-        return RequestError.fieldNotProvided(res, "Campos");
+      if (email === "") {
+        return RequestError.fieldNotProvided(res, "E-mail");
+      }
+
+      if (password === "") {
+        return RequestError.fieldNotProvided(res, "Senha");
       }
 
       if (password.length < 6) {

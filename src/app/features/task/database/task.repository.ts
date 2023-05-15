@@ -51,7 +51,7 @@ export class TaskRepository {
       return 0;
     }
 
-    return result;
+    return TaskRepository.mapEntityModel(result);
   }
 
   public async update(
@@ -59,7 +59,7 @@ export class TaskRepository {
     title: string,
     description: string,
     archived: boolean
-  ): Promise<any> {
+  ) {
     const result = await this.repository.update(
       {
         id,

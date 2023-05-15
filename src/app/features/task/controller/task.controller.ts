@@ -1,12 +1,5 @@
 import { Request, Response } from "express";
-import { Task } from "../../../models/task.model";
-import { User } from "../../../models/user.model";
 import { ServerError } from "../../../shared/errors/server.error";
-import { RequestError } from "../../../shared/errors/request.error";
-import { UserRepository } from "../../user/database/user.repository";
-import { SuccessResponse } from "../../../shared/util/success.response";
-import { TaskRepository } from "../database/task.repository";
-import { error } from "console";
 import { ListTasksUsecase } from "../usecases/list-tasks.usecase";
 import { CreateTaskUsecase } from "../usecases/create-task.usecase";
 import { UpdateTaskUsecase } from "../usecases/update-task.usecase";
@@ -75,7 +68,7 @@ export class TaskController {
   public async get(req: Request, res: Response) {
     try {
       const { userId, taskId } = req.params;
-      const result = await new GetTaskUsecase().execute({ userId, taskId });
+      const result = await new GetTaskUsecase().execute(taskId);
 
       return res.status(result.code).send(result);
     } catch (error: any) {

@@ -17,7 +17,7 @@ export class UserController {
 
       return res.status(result.code).send(result);
     } catch (error: any) {
-      return ServerError.genericError(res, "Usuário não encontrado!");
+      return ServerError.genericError(res, error);
     }
   }
 

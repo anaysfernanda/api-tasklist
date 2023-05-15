@@ -10,7 +10,15 @@ interface DeleteTaskParams {
 
 export class DeleteTaskUsecase {
   public async execute(data: DeleteTaskParams): Promise<Return> {
-    const user = new UserRepository().get(data.userId);
+    const user = await new UserRepository().get(data.userId);
+
+    if (!user) {
+      return {
+        ok: false,
+        code: 404,
+        message: "Usuário não encontrado!",
+      };
+    }
 
     const database = new TaskRepository();
 

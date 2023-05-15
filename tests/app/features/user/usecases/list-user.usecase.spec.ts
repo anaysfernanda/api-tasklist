@@ -7,7 +7,7 @@ import { CacheRepository } from "../../../../../src/app/shared/database/reposito
 
 jest.mock("ioredis", () => require("ioredis-mock"));
 
-describe("Create User Usecase", () => {
+describe("List User Usecase", () => {
   beforeAll(async () => {
     await TypeormConnection.connect();
     await RedisConnection.connect();
@@ -47,7 +47,6 @@ describe("Create User Usecase", () => {
     expect(result).toHaveProperty("message", "Usuários listados com sucesso!");
     expect(result).toBeTruthy();
     expect(result.data).toHaveLength(2);
-    expect(cacheSpyOn).toHaveBeenCalled();
     expect(cacheSpyOn).toHaveBeenCalledWith("userList", result.data, 3600);
     expect(cacheSpyOn).toHaveBeenCalledTimes(1);
   });

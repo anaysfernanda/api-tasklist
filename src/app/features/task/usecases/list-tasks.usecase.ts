@@ -1,9 +1,20 @@
 import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { Return } from "../../../shared/util/return.contract";
+import { UserRepository } from "../../user/database/user.repository";
 import { TaskRepository } from "../database/task.repository";
 
 export class ListTasksUsecase {
   public async execute(userId: string, archived: any): Promise<Return> {
+    const user = await new UserRepository().get(userId);
+
+    if (!user) {
+      return {
+        ok: false,
+        code: 404,
+        message: "Usuário não encontrado!",
+      };
+    }
+
     const cacheRepository = new CacheRepository();
     const cacheResult = await cacheRepository.get(
       `listaTasks:${userId}-${archived}`

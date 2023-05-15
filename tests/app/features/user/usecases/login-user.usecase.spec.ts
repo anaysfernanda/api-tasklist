@@ -4,7 +4,7 @@ import { LoginUsecase } from "../../../../../src/app/features/user/usecases/logi
 import { UserRepository } from "../../../../../src/app/features/user/database/user.repository";
 import { User } from "../../../../../src/app/models/user.model";
 
-describe("Create User Usecase", () => {
+describe("Login User Usecase", () => {
   beforeAll(async () => {
     await TypeormConnection.connect();
   });

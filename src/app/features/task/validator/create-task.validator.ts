@@ -10,17 +10,14 @@ export class CreateTaskValidator {
     next: NextFunction
   ) {
     try {
-      const { userId } = req.params;
       const { title, description } = req.body;
 
-      const database = new UserRepository();
-      const user = await database.get(userId);
-
-      if (!user) {
-        return RequestError.notFound(res, "Usuário");
+      if (title === "") {
+        return RequestError.fieldNotProvided(res, "Título");
       }
-      if (title === "" || description === "") {
-        return RequestError.fieldNotProvided(res, "Campo");
+
+      if (description === "") {
+        return RequestError.fieldNotProvided(res, "Descrição");
       }
 
       next();
