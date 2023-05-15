@@ -70,7 +70,7 @@ describe("Update task controller tests", () => {
 
     const db = TypeormConnection.connection.manager;
 
-    const taskOne = db.create(TaskEntity, {
+    const newTask = db.create(TaskEntity, {
       title: task.title,
       description: task.description,
       archived: task.archived,
@@ -78,10 +78,10 @@ describe("Update task controller tests", () => {
         id: user.id,
       },
     });
-    await db.save(taskOne);
+    await db.save(newTask);
 
     const res = await request(app)
-      .put(`/user/${user.id}/tasks/${taskOne.id}`)
+      .put(`/user/${user.id}/tasks/${newTask.id}`)
       .send({
         title: "new_title",
         description: "new_description",

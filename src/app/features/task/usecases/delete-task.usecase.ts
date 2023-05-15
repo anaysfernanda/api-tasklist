@@ -42,7 +42,7 @@ export class DeleteTaskUsecase {
     return {
       ok: true,
       code: 200,
-      message: "Task excluida com sucesso!",
+      message: "Task excluída com sucesso!",
       data: data.taskId,
     };
   }

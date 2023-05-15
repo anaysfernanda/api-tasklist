@@ -80,7 +80,7 @@ describe("Delete task Usecase", () => {
     expect(result).toBeDefined();
     expect(result).toHaveProperty("ok", true);
     expect(result).toHaveProperty("code", 200);
-    expect(result.message).toEqual("Task excluida com sucesso!");
+    expect(result.message).toEqual("Task excluída com sucesso!");
     expect(result).toBeTruthy();
   });
 });
